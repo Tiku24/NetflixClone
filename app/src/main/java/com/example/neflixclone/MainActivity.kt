@@ -20,15 +20,24 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -37,6 +46,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            window.statusBarColor = getColor(R.color.black)
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -44,6 +55,7 @@ class MainActivity : ComponentActivity() {
                     .verticalScroll(rememberScrollState()),
 
             ) {
+
                 TopAppBar()
                 ContentChooser()
                 FeaturesMovieSection()
@@ -60,6 +72,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
 fun TopAppBar(){
     Row(
@@ -78,10 +91,19 @@ fun TopAppBar(){
         Row (
             verticalAlignment = Alignment.CenterVertically
         ){
-            Image(painter = painterResource(id = R.drawable.searching), contentDescription = "search",
-                modifier = Modifier
-                    .padding(end = 12.dp)
-                    .size(36.dp))
+//            Image(painter = painterResource(id = R.drawable.searching), contentDescription = "search",
+//                modifier = Modifier
+//                    .padding(end = 12.dp)
+//                    .size(36.dp))
+            var inputText by remember { mutableStateOf("") }
+
+            TextField(value = inputText, onValueChange = {newText ->
+                inputText = newText
+            },
+                leadingIcon = {
+                    Icon(
+                        imageVector =Icons.Default.Search ,
+                        contentDescription = null)})
 
             Image(painter = painterResource(id = R.drawable.user_circle), contentDescription = "profile",
                 modifier = Modifier
@@ -239,4 +261,3 @@ fun getRandomMovieList() : List<MovieItemModel>{
 data class MovieItemModel(
     val image : Int
 )
-
